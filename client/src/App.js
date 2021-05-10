@@ -3,6 +3,7 @@ import {BrowserRouter,Link,Route,Switch} from 'react-router-dom';
 // import './App.css';
 import Register from './components/user/Register';
 import Login from './components/user/Login'
+import Home from './components/Home/Home'
 import axios from 'axios'
 
 class App extends React.Component{
@@ -37,10 +38,23 @@ class App extends React.Component{
             <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
               <ul className="navbar-nav mr-auto">
                 
-                  <div className="navitems1">
-                    <li className="nav-item"><Link to="/users/register">Register</Link></li>
-                    <li className="nav-item ml-5"><Link to="/users/login">Login</Link></li>
-                  </div>
+              {this.state.isAuthenticated ? (
+                 
+                 <div className=" navitems1 "> 
+                 <li className="nav-item ml-4"><Link to="/homepage" >Home</Link></li>
+                 
+                 <li className="nav-item ml-4"><Link to="/users/logout" >Logout</Link></li>
+                 </div>
+             
+
+                 ) : (
+                 <div className="navitems1">
+                   {/* <li className="nav-item ml-5"><Link to="/" >Home</Link></li> */}
+                   <li className="nav-item ml-5"><Link to="/users/register">Register</Link></li>
+                   <li className="nav-item ml-5"><Link to="/users/login">Login</Link></li>
+                   
+                 </div>
+               )}
                 
               </ul>
             </nav>
@@ -48,6 +62,7 @@ class App extends React.Component{
           </div>
           <Switch>
           <Route path="/users/register" component={ Register } />
+          <Route path="/homepage"  component={Home}/>
           <Route path="/users/login" render={(props) => {
               return <Login {...props} handleAuthentication={this.handleAuthentication} />
           }} />

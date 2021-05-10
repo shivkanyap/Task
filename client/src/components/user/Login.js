@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import Home from '../Home/Home'
 
 import { Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 
@@ -31,7 +32,7 @@ class Login extends React.Component {
                 // write this to localStorage 
                 localStorage.setItem('token', response.data.token)
                 // redirect to notes page 
-                this.props.history.push('/requestform/view')
+                this.props.history.push('/homepage')
                 // change the navigation links = update the state of isAuthenticated in the parent component
                 this.props.handleAuthentication(true)
             }

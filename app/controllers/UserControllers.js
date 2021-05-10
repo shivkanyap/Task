@@ -25,6 +25,25 @@ router.post('/login',(req,res)=>{
         res.send(err)
     })    
 })
+router.delete('/logout', authenticateUser,function(req,res){
+    const {user,token}=req
+    User.findByIdAndUpdate(user._id,{$pull:{tokens:{token:token}}})
+    .then(function(user){
+        res.send({notice:'successfully logout...'})
+    })
+    .catch(function(err){
+        res.send(err)
+    })
+})
+router.get('/allUsers', async function(req,res){
+    try{
+        let users =await User.find()
+        return res.send(users)
+    }catch(e){
+        return res.send(e)
+    }
+
+})
 
 module.exports={
     usersRouter:router

@@ -11,22 +11,12 @@ class Register extends React.Component {
             email: '',
             password: '',
             conformpassword:'',
-            department:'',
-            departmentArray:[],
+           
             notice:''
         }
     }
 
-    componentDidMount() {
-    axios.get('http://localhost:3005/department/allDepartments')
-    .then((response)=>{
-    // console.log(response,'in category')
-        this.setState(()=>({
-            departmentArray:response.data
-              
-        }))
-    })
-    }  
+   
 
     handleChange = (e) => {
         e.persist() 
@@ -36,14 +26,16 @@ class Register extends React.Component {
     }
 
     handleSubmit = (e) => {
+        console.log("u clicked me")
     e.preventDefault()
     const formData = {
         username: this.state.username,
         email: this.state.email,
         password: this.state.password,
-        department:this.state.department
+        
     }
     if(this.state.password===this.state.conformpassword) {
+        console.log("wel")
         axios.post('http://localhost:3005/users/register', formData)
         .then(response => {
             if(response.data.errors) {
@@ -51,6 +43,7 @@ class Register extends React.Component {
                     errors: response.data.errors
                 }))
             } else {
+                console.log("u here")
                 this.props.history.push('/users/login')
             }   
         })
@@ -60,6 +53,7 @@ class Register extends React.Component {
         }))
     }     
 } 
+
     render() {
         return(
             <div>
@@ -119,7 +113,7 @@ class Register extends React.Component {
                             </Col>
                         </FormGroup>
                     </div>
-                    {/* <div>
+                    <div>
                         <FormGroup row>
                             <Label sm={2} className="headerlabel">
                             Conform Password:
@@ -134,7 +128,7 @@ class Register extends React.Component {
                                 ></Input>
                             </Col>
                         </FormGroup>
-                    </div> */}
+                    </div>
                     {this.state.notice && <p className="text text-danger"> {this.state.notice} </p>}
                     <Button className="submit" color="primary">Submit</Button>
                 </Form>
