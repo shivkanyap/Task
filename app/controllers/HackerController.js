@@ -2,6 +2,7 @@ const express=require('express')
 const router=express.Router()
 const {Hacker}=require('../models/Hacker')
 
+const _ =require('lodash')
 
 const multer=require('multer')
 const storage =multer.diskStorage({
@@ -68,7 +69,7 @@ router.get('/result',async (req,res)=>{
             }
 })
 
-router.post('/add',upload.single('photo'),(req,res)=>{
+router.post('/add',upload.single('photo'),(req,res,next)=>{
     const body=req.body
     if(req.file){
         body.photo=req.file.path
@@ -78,6 +79,7 @@ router.post('/add',upload.single('photo'),(req,res)=>{
         error.httpStatusCode = 400
         return next(error)
     }
+    
     const hacker =new Hacker(body)
     console.log(body)
     hacker.save()

@@ -4,6 +4,7 @@ import {BrowserRouter,Link,Route,Switch} from 'react-router-dom';
 import Register from './components/user/Register';
 import Login from './components/user/Login'
 import Home from './components/Home/Home'
+import Hackerdata from './components/Home/Hackerdata'
 import axios from 'axios'
 
 class App extends React.Component{
@@ -64,6 +65,7 @@ class App extends React.Component{
           <Switch>
           <Route path="/users/register" component={ Register } />
           <Route path="/homepage"  component={Home}/>
+          <Route path="/:id" component={Hackerdata}/>
           <Route path="/users/login" render={(props) => {
               return <Login {...props} handleAuthentication={this.handleAuthentication} />
           }} />

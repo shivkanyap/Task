@@ -1,5 +1,7 @@
 import React from 'react'
 import axios from 'axios'
+import {BrowserRouter,Link,Route,Switch} from 'react-router-dom';
+import Hackerdata from './Hackerdata'
 
 class Home extends React.Component{ 
     constructor(){
@@ -28,13 +30,39 @@ class Home extends React.Component{
             <div>
                 
                 {
-                    console.log(this.state.homepage)
+                    <table className="table">
+                    <thead className="thead-dark">
+                        <tr>
+                        
+                            
+                            <th>NAME</th>
+                            <th>Photo</th>
+                            
+                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                   { this.state.homepage.map(item=>{
+                       return(
+                        <tr>
+                            
+                           
+                            <td><Link  to={`/hacker/${item._id}`}>{item.name}</Link></td>
+                            <td>{item.photo!=='null'?<img src={`uploads/${item.photo}`}/>:''}</td>
+                            
+                         
+                    </tr>
+
+                       ) 
+                       
+                                // <td>22</td>
+                    }) }  
+                    </tbody>
                    
-                //    this.state.homepage.map(item=>{
-                //        return <h3>{item.name}</h3>
-                //     })
+                    </table>
                 }
-                <h3></h3>
+                <Route path="/hacker/:id" component={ Hackerdata }/>
             </div>
         )
     }
