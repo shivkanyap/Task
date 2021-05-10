@@ -45,8 +45,12 @@ const hackerSchema=new Schema({
         type:Number,
     },
     ComP:{
-        type:[Object]
+        type:Object
 
+    },
+    photo:{
+        type:String,
+        default:null
     }
     
 

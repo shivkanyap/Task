@@ -44,6 +44,7 @@ class App extends React.Component{
                  <li className="nav-item ml-4"><Link to="/homepage" >Home</Link></li>
                  
                  <li className="nav-item ml-4"><Link to="/users/logout" >Logout</Link></li>
+                 <li className="nav-item ml-4"><Link to="">Toppers</Link></li>
                  </div>
              
 

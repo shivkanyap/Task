@@ -5,13 +5,14 @@ class Home extends React.Component{
     constructor(){
         super()
         this.state={
-            homepage:{}
+            homepage:[]
         }
     }
     componentDidMount(){
+        console.log('in mount')
         axios.get('http://localhost:3005/hacker/allHackers')
         .then(response=>{
-            console.log(response.data)
+            console.log(response.data,' in users hack')
             this.setState(()=>({
                 homepage:response.data
             }))
@@ -25,7 +26,15 @@ class Home extends React.Component{
     render(){
         return(
             <div>
-                <h3>{this.state.homepage.name}</h3>
+                
+                {
+                    console.log(this.state.homepage)
+                   
+                //    this.state.homepage.map(item=>{
+                //        return <h3>{item.name}</h3>
+                //     })
+                }
+                <h3></h3>
             </div>
         )
     }
