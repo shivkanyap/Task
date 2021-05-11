@@ -27,9 +27,7 @@ const hackerSchema=new Schema({
     solnaccepted:{
         type:Number,
     },
-    rank:{
-        type:Number,
-    },
+   
     followers:{
         type:Number,
     },

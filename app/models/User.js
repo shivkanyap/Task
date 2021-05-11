@@ -32,9 +32,7 @@ const userSchema=new Schema({
     },
     role:{
         type:String,
-        
-        
-    },
+        },
     tokens:[{
         token:{
             type:String

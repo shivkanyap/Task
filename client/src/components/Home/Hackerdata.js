@@ -12,23 +12,35 @@ class Hackerdata extends React.Component{
     }
     
     componentDidMount(){
-        const {id}=this.props.match.params.id
-        console.log(id,'in hack id')
-        axios.get(`http://localhost:3005/hacker/${id}`)
+        const id=this.props.match.params.id
+        
+        axios.get(`http://localhost:3005/hacker/${id}`,{
+            headers:{
+                'x-auth':localStorage.getItem('token')
+            }
+        })
         .then(res=>{
             console.log(res.data,"particular id data")
             this.setState(()=>({
                 hackerinfo:res.data
             }))
         })
+        
     }
     render(){
+        const {hackerinfo}=this.state
         return(
             <div>
-                {console.log(this.state.hackerinfo,'info')}
-                <h3>hello</h3>
+               
+                <h3>Name : {hackerinfo.name}</h3>
+                <h4>Location : {hackerinfo.location}</h4>
+                <h4>Followers :{hackerinfo.followers} </h4>
+                <h4>Following :{hackerinfo.following}</h4>
+                
             </div>
         )
+            
+        
     }
 }
 export default Hackerdata

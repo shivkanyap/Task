@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import {BrowserRouter,Link,Route,Switch} from 'react-router-dom';
 import Hackerdata from './Hackerdata'
+import '../../App.css'
 
 class Home extends React.Component{ 
     constructor(){
@@ -11,10 +12,14 @@ class Home extends React.Component{
         }
     }
     componentDidMount(){
-        console.log('in mount')
-        axios.get('http://localhost:3005/hacker/allHackers')
+       
+        axios.get('http://localhost:3005/hacker/allHackers',{
+            headers:{
+                'x-auth':localStorage.getItem('token')
+            }
+        })
         .then(response=>{
-            console.log(response.data,' in users hack')
+            
             this.setState(()=>({
                 homepage:response.data
             }))
@@ -33,30 +38,24 @@ class Home extends React.Component{
                     <table className="table">
                     <thead className="thead-dark">
                         <tr>
-                        
-                            
                             <th>NAME</th>
                             <th>Photo</th>
-                            
-                        
+        
                         </tr>
                     </thead>
                     <tbody>
                         
-                   { this.state.homepage.map(item=>{
+                   { this.state.homepage && this.state.homepage.map(item=>{
                        return(
                         <tr>
-                            
-                           
+
                             <td><Link  to={`/hacker/${item._id}`}>{item.name}</Link></td>
-                            <td>{item.photo!=='null'?<img src={`uploads/${item.photo}`}/>:''}</td>
+                            <td className=".mian-image-first">{item.photo!=='null'?<img src={`uploads/${item.photo}`}/>:''}</td>
                             
-                         
-                    </tr>
+                        </tr>
 
                        ) 
-                       
-                                // <td>22</td>
+                         
                     }) }  
                     </tbody>
                    

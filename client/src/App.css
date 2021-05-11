@@ -36,3 +36,31 @@
     transform: rotate(360deg);
   }
 }
+.floatright {
+  float: right;
+}
+.floatleft {
+  float: left;
+}
+
+.navitems1 {
+  display: flex;
+}
+
+.logout {
+  padding-left: 400px;
+}
+.mian-image-first {
+  /* position: relative; */
+ 
+  height: 500px;
+  width: 200px;
+}
+.table{
+  padding: 11px;
+  margin:40px ;
+  /* color:white; */
+}
+.thread-dark{
+  color: #61dafb;
+}

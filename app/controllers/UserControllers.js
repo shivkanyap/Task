@@ -2,12 +2,12 @@ const express=require('express')
 const router=express.Router()
 const {User}=require('../models/User')
 const { authenticateUser}=require('../middleware/authentication')
-// const _=require('lodash')
+
 
 router.post('/register',(req,res)=>{
     const body=req.body
     const user =new User(body)
-    console.log(body)
+    
     user.save()
     .then(user=>res.send(user))
     .catch(err=>res.send(err))

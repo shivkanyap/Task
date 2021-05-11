@@ -26,7 +26,7 @@ class Register extends React.Component {
     }
 
     handleSubmit = (e) => {
-        console.log("u clicked me")
+       
     e.preventDefault()
     const formData = {
         username: this.state.username,
@@ -43,7 +43,7 @@ class Register extends React.Component {
                     errors: response.data.errors
                 }))
             } else {
-                console.log("u here")
+                
                 this.props.history.push('/users/login')
             }   
         })

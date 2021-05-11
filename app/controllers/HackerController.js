@@ -1,6 +1,7 @@
 const express=require('express')
 const router=express.Router()
 const {Hacker}=require('../models/Hacker')
+const { authenticateUser}=require('../middleware/authentication')
 
 const _ =require('lodash')
 
@@ -28,9 +29,22 @@ const upload = multer({
     limits: { fileSize: 1024 * 1024 * 5 },
     fileFilter
 })
+function dynamicSort(property) {
+    var sortOrder = 1;
+    if(property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+    return function (a,b) {
+        /* next line works with strings and numbers, 
+         * and you may want to customize it to your needs
+         */
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
+}
 
-
-router.get('/result',async (req,res)=>{
+router.get('/result',authenticateUser,async (req,res)=>{
     
             try{
                 let solAvg=0
@@ -39,29 +53,23 @@ router.get('/result',async (req,res)=>{
                 let total=0
                 let resArray=[]
                 let result =await Hacker.find()
-                // let result=hacker.sort(dynamicSort("name"))
+               
                 result.forEach(data=>{
-                    console.log((data.solnaccepted/data.challengessolved)*100,'re')
+                    
                     
                     solAvg=(data.solnaccepted/data.challengessolved)*100
                     let sum=0
                     Object.values(data.ComP).forEach(item=>{
-                        
-                        console.log(item,'java')
-                        sum=sum+item
-                        
-                        
+                        sum=sum+item   
                     })
                     compAvg=((sum)/300)*100
                     total=solAvg+compAvg
-                    console.log(solAvg,compAvg,total)
                     resArray.push({
                         "name":data.name,
                         "value":total  
                     })
         
                 })
-                console.log('r',resArray)
                 
                 return res.send(result)
             }catch(e){
@@ -69,7 +77,7 @@ router.get('/result',async (req,res)=>{
             }
 })
 
-router.post('/add',upload.single('photo'),(req,res,next)=>{
+router.post('/add',authenticateUser,upload.single('photo'),(req,res,next)=>{
     const body=req.body
     if(req.file){
         body.photo=req.file.path
@@ -81,26 +89,42 @@ router.post('/add',upload.single('photo'),(req,res,next)=>{
     }
     
     const hacker =new Hacker(body)
-    console.log(body)
+    
     hacker.save()
     .then(hack=>res.send(hack))
     .catch(err=>res.send(err))
 })
-router.get('/allHackers', async function(req,res){
-    function dynamicSort(property) {
-        var sortOrder = 1;
-        if(property[0] === "-") {
-            sortOrder = -1;
-            property = property.substr(1);
-        }
-        return function (a,b) {
-            /* next line works with strings and numbers, 
-             * and you may want to customize it to your needs
-             */
-            var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-            return result * sortOrder;
-        }
+router.get('/top3',authenticateUser, async (req, res) => {
+    try {
+      let solAvg = 0;
+      let compAvg = 0;
+      let total = 0;
+      let resArray = [];
+      let result = await Hacker.find();
+  
+      result.forEach(data => {
+        solAvg = (data.solnaccepted / data.challengessolved) * 100;
+        let sum = 0;
+        Object.values(data.ComP).forEach(item => {
+          sum = sum + item;
+        });
+        compAvg = ( sum / (result.length*100) ) * 100;
+        total = solAvg + compAvg;
+       
+        resArray.push({
+          name: data.name,
+          value: total
+        });
+      });
+    
+      let top3 = resArray.sort(dynamicSort('value'));
+      return res.send(top3.slice(1).slice(-3));
+    } catch (e) {
+      return res.send(e);
     }
+  });
+router.get('/allHackers', authenticateUser,async function(req,res){
+   
     try{
         let hacker =await Hacker.find()
         let result=hacker.sort(dynamicSort("name"))
@@ -110,7 +134,7 @@ router.get('/allHackers', async function(req,res){
     }
 
 })
-router.get('/:id',(req,res)=>{
+router.get('/:id',authenticateUser,(req,res)=>{
     const {id}=req.params
     console.log('id',id)
     Hacker.findOne({_id:id})
@@ -127,50 +151,7 @@ router.get('/:id',(req,res)=>{
     })
 })
 
-// router.get('/text', async function(req,res){
-//     console.log('hi')
-//     // function dynamicSort(property) {
-//     //     var sortOrder = 1;
-//     //     if(property[0] === "-") {
-//     //         sortOrder = -1;
-//     //         property = property.substr(1);
-//     //     }
-//     //     return function (a,b) {
-//     //         /* next line works with strings and numbers, 
-//     //          * and you may want to customize it to your needs
-//     //          */
-//     //         var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-//     //         return result * sortOrder;
-//     //     }
-//     // }
-//     try{
-//         let solAvg=0
-//         let solArray=[]
-//         let compAvg=0
-//         let total=0
-//         let resArray=[{}]
-//         let hacker =await Hacker.find()
-//         let result=hacker.sort(dynamicSort("name"))
-//         // result.forEach(data=>{
-//         //     solAvg=(solnaccepted/challengessolved)*100
-//         //     data.ComP.forEach(item=>{
-//         //         compAvg=((item.java+item.javascript+item.Html)/300)*100
-//         //     })
-//         //     total=solAvg+compAvg
-//         //     resArray.push({
-//         //         "name":data.name,
-//         //         "value":total  
-//         //     })
 
-//         // })
-//         console.log('r',resArray)
-        
-//         return res.send(result)
-//     }catch(e){
-//         return res.send(e)
-//     }
-
-// })
 module.exports={
     hackerRouter:router
 }
