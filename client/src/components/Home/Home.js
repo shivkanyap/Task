@@ -13,7 +13,7 @@ class Home extends React.Component{
     }
     componentDidMount(){
        
-        axios.get('http://localhost:3005/hacker/allHackers',{
+        axios.get('/hacker/allHackers',{
             headers:{
                 'x-auth':localStorage.getItem('token')
             }

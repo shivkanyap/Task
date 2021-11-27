@@ -36,7 +36,7 @@ class Register extends React.Component {
     }
     if(this.state.password===this.state.conformpassword) {
         console.log("wel")
-        axios.post('http://localhost:3005/users/register', formData)
+        axios.post('/users/register', formData)
         .then(response => {
             if(response.data.errors) {
                 this.setState(() => ({

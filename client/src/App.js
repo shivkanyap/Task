@@ -73,7 +73,7 @@ class App extends React.Component{
           }} />
           
           <Route path="/users/logout" render={(props) => {
-              axios.delete('http://localhost:3005/users/logout', {
+              axios.delete('/users/logout', {
                 headers: {
                   'x-auth': localStorage.getItem('token')
                 }

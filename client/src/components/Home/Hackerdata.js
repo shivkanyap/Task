@@ -14,7 +14,7 @@ class Hackerdata extends React.Component{
     componentDidMount(){
         const id=this.props.match.params.id
         
-        axios.get(`http://localhost:3005/hacker/${id}`,{
+        axios.get(`/hacker/${id}`,{
             headers:{
                 'x-auth':localStorage.getItem('token')
             }

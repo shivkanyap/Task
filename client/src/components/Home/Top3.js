@@ -6,7 +6,7 @@ const Top3 = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3005/hacker/top3`,{
+      .get(`/hacker/top3`,{
         headers:{
             'x-auth':localStorage.getItem('token')
         }
